@@ -1,0 +1,14 @@
+.main {
+    background-color: #0f172a;
+    color: white;
+}
+
+.stMetric {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+h1, h2, h3 {
+    color: #38bdf8;
+}

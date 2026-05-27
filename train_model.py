@@ -2,133 +2,124 @@ import pandas as pd
 import joblib
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import (
-    mean_absolute_error,
-    mean_squared_error,
-    r2_score
-)
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error, r2_score
 
-# ======================================
+# =====================================================
 # LOAD DATA
-# ======================================
+# =====================================================
 
 data = pd.read_csv("data/merged_data.csv")
 
-print("Dataset Loaded Successfully!")
+print("✅ Dataset Loaded Successfully!")
 
-# ======================================
-# LABEL ENCODING
-# ======================================
+# =====================================================
+# FEATURES
+# =====================================================
 
-encoder = LabelEncoder()
+features = [
 
-categorical_columns = [
     "CourseCategory",
     "CourseType",
     "CourseLevel",
+    "CoursePrice",
+    "CourseDuration",
+    "CourseRating",
+    "TeacherRating",
+    "YearsOfExperience",
     "PriceBand",
     "ExperienceLevel",
     "RatingTier"
+
 ]
 
-for column in categorical_columns:
-    data[column] = encoder.fit_transform(data[column])
+# =====================================================
+# TARGETS
+# =====================================================
 
-print("Categorical Encoding Completed!")
+X = data[features]
 
-# ======================================
-# SELECT FEATURES
-# ======================================
+y_enrollment = data["EnrollmentCount"]
 
-X = data[
-    [
-        "CourseCategory",
-        "CourseType",
-        "CourseLevel",
-        "CoursePrice",
-        "CourseDuration",
-        "CourseRating",
-        "TeacherRating",
-        "YearsOfExperience",
-        "PriceBand",
-        "ExperienceLevel",
-        "RatingTier"
-    ]
-]
+y_revenue = data["Revenue"]
 
-# Target Variable
-y = data["EnrollmentCount"]
-
-# ======================================
-# SPLIT DATA
-# ======================================
+# =====================================================
+# TRAIN TEST SPLIT
+# =====================================================
 
 X_train, X_test, y_train, y_test = train_test_split(
+
     X,
-    y,
+    y_enrollment,
+
     test_size=0.2,
     random_state=42
+
 )
 
-print("Train Test Split Completed!")
+# =====================================================
+# RANDOM FOREST MODEL
+# =====================================================
 
-# ======================================
-# FEATURE SCALING
-# ======================================
+model = RandomForestRegressor(
 
-scaler = StandardScaler()
+    n_estimators=100,
+    random_state=42
 
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
-
-print("Feature Scaling Completed!")
-
-# ======================================
-# TRAIN MODEL
-# ======================================
-
-model = LinearRegression()
+)
 
 model.fit(X_train, y_train)
 
-print("Model Training Completed!")
-
-# ======================================
+# =====================================================
 # PREDICTIONS
-# ======================================
+# =====================================================
 
 predictions = model.predict(X_test)
 
-print("Predictions Generated!")
-
-# ======================================
-# MODEL EVALUATION
-# ======================================
+# =====================================================
+# EVALUATION
+# =====================================================
 
 mae = mean_absolute_error(y_test, predictions)
 
-rmse = mean_squared_error(
-    y_test,
-    predictions
-) ** 0.5
-
 r2 = r2_score(y_test, predictions)
 
-print("\nMODEL PERFORMANCE")
-print("MAE :", mae)
-print("RMSE :", rmse)
-print("R2 Score :", r2)
+print(f"✅ MAE: {mae}")
 
-# ======================================
+print(f"✅ R2 Score: {r2}")
+
+# =====================================================
 # SAVE MODEL
-# ======================================
+# =====================================================
 
-joblib.dump(
-    model,
-    "models/forecast_model.pkl"
+joblib.dump(model, "model/random_forest_model.pkl")
+
+print("✅ Model Saved Successfully!")
+
+# =====================================================
+# FEATURE IMPORTANCE
+# =====================================================
+
+importance_df = pd.DataFrame({
+
+    "Feature": features,
+
+    "Importance": model.feature_importances_
+
+})
+
+importance_df = importance_df.sort_values(
+
+    by="Importance",
+    ascending=False
+
 )
 
-print("\nModel Saved Successfully!")
+importance_df.to_csv(
+
+    "data/feature_importance.csv",
+    index=False
+
+)
+
+print("✅ Feature Importance Saved!")
