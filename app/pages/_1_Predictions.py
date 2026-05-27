@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import joblib
 import numpy as np
+from pathlib import Path
 
 # ==========================================
 # PAGE CONFIG
@@ -17,7 +18,13 @@ st.set_page_config(
 # LOAD MODEL
 # ==========================================
 
-model = joblib.load("../models/forecast_model.pkl")
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+model_path = BASE_DIR / "models" / "forecast_model.pkl"
+
+model = joblib.load(model_path)
 
 # ==========================================
 # PAGE TITLE
