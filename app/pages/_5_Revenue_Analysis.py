@@ -17,9 +17,13 @@ st.set_page_config(
 # LOAD DATA
 # ==========================================
 
-data = pd.read_csv(
-    "../data/merged_data.csv"
-)
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+data_path = BASE_DIR / "data" / "merged_data.csv"
+
+data = pd.read_csv(data_path)
 
 # ==========================================
 # PAGE TITLE
