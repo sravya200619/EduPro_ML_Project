@@ -548,83 +548,69 @@ else:
             min(demand_score, 100),
             1
         )
+        
 
-        st.subheader("📈 Forecast Interpretation")
+        # ==================================================
+        # RESULTS
+        # ==================================================
 
-if prediction >= 50:
-    st.success(
-        "Course shows strong future demand and revenue potential."
-    )
-elif prediction >= 20:
-    st.warning(
-        "Course shows moderate market demand."
-    )
-else:
-    st.error(
-        "Course demand appears limited."
-    )
+        st.markdown("---")
 
-# ==================================================
-# RESULTS
-# ==================================================
+        st.subheader("📊 AI Forecast Results")
 
-st.markdown("---")
+        r1, r2, r3 = st.columns(3)
 
-st.subheader("📊 AI Forecast Results")
-
-r1, r2, r3 = st.columns(3)
-
-with r1:
+        with r1:
             st.metric(
                 "👨‍🎓 Enrollments",
                 enrollment_prediction
             )
 
-with r2:
+        with r2:
             st.metric(
                 "💰 Revenue",
                 f"₹ {revenue_prediction:,}"
             )
 
-with r3:
+        with r3:
             st.metric(
                 "🔥 Demand Score",
                 f"{demand_score}%"
             )
 
-# ==================================================
-# AI INSIGHTS
-# ==================================================
+        # ==================================================
+        # AI INSIGHTS
+        # ==================================================
 
-st.markdown("---")
+        st.markdown("---")
 
-st.subheader("🧠 AI Insights")
+        st.subheader("🧠 AI Insights")
 
-if course_price >= 7000:
+        if course_price >= 7000:
 
             st.warning(
                 "💰 High pricing may reduce enrollments."
             )
 
-if course_rating >= 4.5:
+        if course_rating >= 4.5:
 
             st.success(
                 "⭐ Excellent course ratings detected."
             )
 
-if teacher_rating >= 4.5:
+        if teacher_rating >= 4.5:
 
             st.info(
                 "👨‍🏫 Highly rated instructors improve trust."
             )
 
-if years_experience >= 10:
+        if years_experience >= 10:
 
             st.info(
                 "📈 Experienced instructors increase credibility."
             )
 
-if demand_score >= 85:
+        if demand_score >= 85:
 
             st.success(
                 "🔥 Strong market demand detected."
@@ -634,11 +620,11 @@ if demand_score >= 85:
         # FEATURE IMPORTANCE
         # ==================================================
 
-st.markdown("---")
+        st.markdown("---")
 
-st.subheader("🧠 Feature Importance")
+        st.subheader("🧠 Feature Importance")
 
-feature_df = pd.DataFrame({
+        feature_df = pd.DataFrame({
 
             "Feature": [
                 "Course Rating",
@@ -658,7 +644,7 @@ feature_df = pd.DataFrame({
 
         })
 
-fig2 = px.bar(
+        fig2 = px.bar(
             feature_df,
             x="Feature",
             y="Importance",
@@ -666,9 +652,9 @@ fig2 = px.bar(
             text="Importance"
         )
 
-fig2.update_layout(template="plotly_dark")
+        fig2.update_layout(template="plotly_dark")
 
-st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True)
 
 # ==================================================
 # MODEL PERFORMANCE
