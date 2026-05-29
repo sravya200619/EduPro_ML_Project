@@ -31,15 +31,7 @@ st.markdown("""
 [data-testid="stSidebar"] {
     background-color: #111827;
 }
-
-footer {
-    visibility: hidden;
-}
-
-header {
-    visibility: hidden;
-}
-
+            
 html, body, [class*="css"] {
     font-family: 'Poppins', sans-serif;
     color: white;
