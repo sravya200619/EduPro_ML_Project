@@ -470,7 +470,76 @@ else:
     )
 
    # ==================================================
-# PREDICTION BUTTON
+# PREDICTION ENGINE
+# ==================================================
+
+st.subheader("🤖 AI Prediction Engine")
+
+import random
+
+col1, col2 = st.columns(2)
+
+with col1:
+
+    category = st.selectbox(
+        "Course Category",
+        [
+            "AI",
+            "Data Science",
+            "Python",
+            "Cloud",
+            "Cybersecurity"
+        ]
+    )
+
+    course_level = st.selectbox(
+        "Course Level",
+        [
+            "Beginner",
+            "Intermediate",
+            "Advanced"
+        ]
+    )
+
+    course_duration = st.slider(
+        "Course Duration (Hours)",
+        1,
+        200,
+        40
+    )
+
+    course_price = st.number_input(
+        "Course Price (₹)",
+        min_value=500,
+        max_value=100000,
+        value=5000
+    )
+
+with col2:
+
+    course_rating = st.slider(
+        "Course Rating",
+        1.0,
+        5.0,
+        4.0
+    )
+
+    teacher_rating = st.slider(
+        "Teacher Rating",
+        1.0,
+        5.0,
+        4.2
+    )
+
+    years_experience = st.slider(
+        "Instructor Experience",
+        0,
+        25,
+        5
+    )
+
+# ==================================================
+# PREDICT BUTTON
 # ==================================================
 
 predict_button = st.button(
@@ -483,10 +552,6 @@ predict_button = st.button(
 
 if predict_button:
 
-    import random
-
-    # CATEGORY MULTIPLIER
-
     category_multiplier = {
 
         "AI": 1.40,
@@ -497,8 +562,6 @@ if predict_button:
 
     }
 
-    # LEVEL MULTIPLIER
-
     level_multiplier = {
 
         "Beginner": 1.05,
@@ -506,8 +569,6 @@ if predict_button:
         "Advanced": 1.30
 
     }
-
-    # SAFE DEFAULTS
 
     cat_factor = category_multiplier.get(
         category,
@@ -524,9 +585,7 @@ if predict_button:
         1.15
     )
 
-    # ==========================================
-    # ENROLLMENT PREDICTION
-    # ==========================================
+    # ENROLLMENT
 
     enrollment_prediction = int(
 
@@ -552,18 +611,14 @@ if predict_button:
         10
     )
 
-    # ==========================================
-    # REVENUE PREDICTION
-    # ==========================================
+    # REVENUE
 
     revenue_prediction = int(
         enrollment_prediction
         * course_price
     )
 
-    # ==========================================
     # DEMAND SCORE
-    # ==========================================
 
     demand_score = int(
 
@@ -580,7 +635,6 @@ if predict_button:
         )
 
         * dynamic_factor
-
     )
 
     demand_score = max(
@@ -588,49 +642,52 @@ if predict_button:
         1
     )
 
-    # ==========================================
-    # RESULTS DISPLAY
-    # ==========================================
+    # DISPLAY
+
+    st.markdown("---")
 
     st.subheader(
-        "📈 Forecast Interpretation"
+        "📈 Forecast Results"
     )
 
-    st.metric(
-        "👨‍🎓 Predicted Enrollment",
-        enrollment_prediction
-    )
+    c1, c2, c3 = st.columns(3)
 
-    st.metric(
-        "💰 Predicted Revenue",
-        f"₹ {revenue_prediction:,}"
-    )
+    with c1:
+        st.metric(
+            "👨‍🎓 Enrollment",
+            enrollment_prediction
+        )
 
-    st.metric(
-        "🔥 Demand Score",
-        f"{demand_score}/100"
-    )
+    with c2:
+        st.metric(
+            "💰 Revenue",
+            f"₹ {revenue_prediction:,}"
+        )
 
-    # ==========================================
-    # AI INTERPRETATION
-    # ==========================================
+    with c3:
+        st.metric(
+            "🔥 Demand",
+            f"{demand_score}/100"
+        )
+
+    # INTERPRETATION
 
     if demand_score >= 75:
 
         st.success(
-            "🔥 Course shows strong future demand and high revenue potential."
+            "🔥 Strong demand and high revenue potential."
         )
 
     elif demand_score >= 45:
 
         st.warning(
-            "📈 Course shows moderate market demand and steady growth."
+            "📈 Moderate demand and steady growth."
         )
 
     else:
 
         st.error(
-            "⚠ Course demand appears limited and may need improvement."
+            "⚠ Lower demand predicted."
         )
         
 # ==================================================
