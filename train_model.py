@@ -22,7 +22,6 @@ features = [
     "CourseCategory",
     "CourseType",
     "CourseLevel",
-    "CoursePrice",
     "CourseDuration",
     "CourseRating",
     "TeacherRating",

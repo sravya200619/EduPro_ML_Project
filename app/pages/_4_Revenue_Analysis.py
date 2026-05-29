@@ -283,58 +283,43 @@ st.plotly_chart(
 st.markdown("---")
 
 # ==========================================
-# MONTHLY FORECAST
+# AI REVENUE FORECAST
 # ==========================================
 
-st.subheader("📅 Future Revenue Forecast")
+st.subheader("📅 AI Revenue Forecast")
 
-forecast_data = pd.DataFrame({
+monthly_revenue = data.groupby(
+    "CourseCategory"
+)["Revenue"].sum().reset_index()
 
-    "Month": [
+monthly_revenue = monthly_revenue.sort_values(
+    by="Revenue",
+    ascending=False
+)
 
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug"
-
-    ],
-
-    "Forecast Revenue": [
-
-        200000,
-        250000,
-        280000,
-        320000,
-        370000,
-        420000,
-        480000,
-        530000
-
-    ]
-
-})
+forecast_df = monthly_revenue.head(8)
 
 fig6 = px.area(
 
-    forecast_data,
+    forecast_df,
 
-    x="Month",
-    y="Forecast Revenue",
+    x="CourseCategory",
+    y="Revenue",
 
-    title="AI Revenue Forecast"
+    title="AI Revenue Forecast by Category",
 
+    color="CourseCategory"
+
+)
+
+fig6.update_layout(
+    template="plotly_dark"
 )
 
 st.plotly_chart(
     fig6,
     use_container_width=True
 )
-
-st.markdown("---")
 
 # ==========================================
 # REVENUE DISTRIBUTION
