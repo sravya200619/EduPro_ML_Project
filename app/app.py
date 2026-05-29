@@ -549,67 +549,82 @@ else:
             1
         )
 
-        # ==================================================
-        # RESULTS
-        # ==================================================
+        st.subheader("📈 Forecast Interpretation")
 
-        st.markdown("---")
+if revenue_prediction >= 50:
+    st.success(
+        "Course shows strong future demand and revenue potential."
+    )
+elif revenue_prediction >= 20:
+    st.warning(
+        "Course shows moderate market demand."
+    )
+else:
+    st.error(
+        "Course demand appears limited."
+    )
 
-        st.subheader("📊 AI Forecast Results")
+# ==================================================
+# RESULTS
+# ==================================================
 
-        r1, r2, r3 = st.columns(3)
+st.markdown("---")
 
-        with r1:
+st.subheader("📊 AI Forecast Results")
+
+r1, r2, r3 = st.columns(3)
+
+with r1:
             st.metric(
                 "👨‍🎓 Enrollments",
                 enrollment_prediction
             )
 
-        with r2:
+with r2:
             st.metric(
                 "💰 Revenue",
                 f"₹ {revenue_prediction:,}"
             )
 
-        with r3:
+with r3:
             st.metric(
                 "🔥 Demand Score",
                 f"{demand_score}%"
             )
 
-        # ==================================================
-        # AI INSIGHTS
-        # ==================================================
+# ==================================================
+# AI INSIGHTS
+# ==================================================
 
-        st.markdown("---")
+st.markdown("---")
 
-        st.subheader("🧠 AI Insights")
+st.subheader("🧠 AI Insights")
 
-        if course_price >= 7000:
+if course_price >= 7000:
 
             st.warning(
                 "💰 High pricing may reduce enrollments."
             )
 
-        if course_rating >= 4.5:
+if course_rating >= 4.5:
 
             st.success(
                 "⭐ Excellent course ratings detected."
             )
 
-        if teacher_rating >= 4.5:
+if teacher_rating >= 4.5:
 
             st.info(
                 "👨‍🏫 Highly rated instructors improve trust."
             )
 
-        if years_experience >= 10:
+if years_experience >= 10:
 
             st.info(
                 "📈 Experienced instructors increase credibility."
             )
 
-        if demand_score >= 85:
+if demand_score >= 85:
 
             st.success(
                 "🔥 Strong market demand detected."
@@ -619,11 +634,11 @@ else:
         # FEATURE IMPORTANCE
         # ==================================================
 
-        st.markdown("---")
+st.markdown("---")
 
-        st.subheader("🧠 Feature Importance")
+st.subheader("🧠 Feature Importance")
 
-        feature_df = pd.DataFrame({
+feature_df = pd.DataFrame({
 
             "Feature": [
                 "Course Rating",
@@ -643,7 +658,7 @@ else:
 
         })
 
-        fig2 = px.bar(
+fig2 = px.bar(
             feature_df,
             x="Feature",
             y="Importance",
@@ -651,15 +666,78 @@ else:
             text="Importance"
         )
 
-        fig2.update_layout(template="plotly_dark")
+fig2.update_layout(template="plotly_dark")
 
-        st.plotly_chart(fig2, use_container_width=True)
+st.plotly_chart(fig2, use_container_width=True)
 
-        # ==================================================
-        # HISTORY
-        # ==================================================
+# ==================================================
+# MODEL PERFORMANCE
+# ==================================================
 
-        st.session_state.history.append({
+st.subheader("📊 Model Performance")
+
+try:
+    results_path = BASE_DIR / "data" / "model_results.csv"
+
+    results_df = pd.read_csv(results_path)
+
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        st.metric(
+            "MAE",
+            round(results_df["MAE"][0], 2)
+        )
+
+    with c2:
+        st.metric(
+            "RMSE",
+            round(results_df["RMSE"][0], 2)
+        )
+
+    with c3:
+        st.metric(
+            "R² Score",
+            round(results_df["R2"][0], 3)
+        )
+
+except:
+    st.warning("Model results file not found.")
+
+st.markdown("---")
+
+# ==================================================
+# AI MODEL EXPLANATION
+# ==================================================
+
+st.subheader("🧠 AI Model Insights")
+
+st.info("""
+
+Random Forest Regressor is used for predicting
+course enrollment demand.
+
+Model considers:
+
+• Course Category  
+• Course Type  
+• Course Level  
+• Ratings  
+• Instructor Experience  
+• Course Duration  
+
+The model learns historical patterns
+to estimate future enrollment demand.
+
+""")
+
+st.markdown("---")
+
+# ==================================================
+# HISTORY
+# ==================================================
+
+st.session_state.history.append({
 
             "Category": category,
             "Revenue": revenue_prediction,
@@ -668,28 +746,28 @@ else:
 
         })
 
-        st.markdown("---")
+st.markdown("---")
 
-        st.subheader("📜 Prediction History")
+st.subheader("📜 Prediction History")
 
-        history_df = pd.DataFrame(
+history_df = pd.DataFrame(
             st.session_state.history
         )
 
-        st.dataframe(
+st.dataframe(
             history_df,
             use_container_width=True
         )
 
-        # ==================================================
-        # RECOMMENDATIONS
-        # ==================================================
+# ==================================================
+# RECOMMENDATIONS
+# ==================================================
 
-        st.markdown("---")
+st.markdown("---")
 
-        st.subheader("🤖 AI Recommendations")
+st.subheader("🤖 AI Recommendations")
 
-        if demand_score >= 80:
+if demand_score >= 80:
 
             st.success("""
             ✅ Excellent market opportunity detected.
@@ -700,7 +778,7 @@ else:
             • Add premium certifications
             """)
 
-        elif demand_score >= 50:
+elif demand_score >= 50:
 
             st.warning("""
             ⚠ Moderate market opportunity.
@@ -711,7 +789,7 @@ else:
             • Add real-world projects
             """)
 
-        else:
+else:
 
             st.error("""
             ❌ High competition detected.
@@ -722,11 +800,11 @@ else:
             • Focus on niche audience
             """)
 
-        st.markdown("---")
+st.markdown("---")
 
-        st.subheader("✅ Conclusion")
+st.subheader("✅ Conclusion")
 
-        st.success("""
+st.success("""
         EduPro transforms data into real-time AI intelligence.
 
         ✔ Predict course demand
