@@ -551,6 +551,19 @@ else:
 
         st.subheader("📈 Forecast Interpretation")
 
+if prediction >= 50:
+    st.success(
+        "Course shows strong future demand and revenue potential."
+    )
+elif prediction >= 20:
+    st.warning(
+        "Course shows moderate market demand."
+    )
+else:
+    st.error(
+        "Course demand appears limited."
+    )
+
 # ==================================================
 # RESULTS
 # ==================================================
