@@ -470,11 +470,11 @@ else:
     )
 
    # ==================================================
-# PREDICT BUTTON
+# PREDICTION BUTTON
 # ==================================================
 
 predict_button = st.button(
-    "🚀 Generate AI Forecast"
+    "🚀 Predict Forecast"
 )
 
 # ==================================================
@@ -485,9 +485,7 @@ if predict_button:
 
     import random
 
-    # -----------------------------------
     # CATEGORY MULTIPLIER
-    # -----------------------------------
 
     category_multiplier = {
 
@@ -499,14 +497,7 @@ if predict_button:
 
     }
 
-    cat_factor = category_multiplier.get(
-        category,
-        1.10
-    )
-
-    # -----------------------------------
     # LEVEL MULTIPLIER
-    # -----------------------------------
 
     level_multiplier = {
 
@@ -516,23 +507,26 @@ if predict_button:
 
     }
 
-    level_factor = level_multiplier.get(
-        course_level,
-        1.10
+    # SAFE DEFAULTS
+
+    cat_factor = category_multiplier.get(
+        category,
+        1.0
     )
 
-    # -----------------------------------
-    # DYNAMIC MARKET FACTOR
-    # -----------------------------------
+    level_factor = level_multiplier.get(
+        course_level,
+        1.0
+    )
 
     dynamic_factor = random.uniform(
         0.90,
         1.15
     )
 
-    # -----------------------------------
-    # ENROLLMENT FORECAST
-    # -----------------------------------
+    # ==========================================
+    # ENROLLMENT PREDICTION
+    # ==========================================
 
     enrollment_prediction = int(
 
@@ -548,12 +542,9 @@ if predict_button:
             (course_price / 180)
         )
 
-        *
-        cat_factor
-        *
-        level_factor
-        *
-        dynamic_factor
+        * cat_factor
+        * level_factor
+        * dynamic_factor
     )
 
     enrollment_prediction = max(
@@ -561,19 +552,18 @@ if predict_button:
         10
     )
 
-    # -----------------------------------
-    # REVENUE FORECAST
-    # -----------------------------------
+    # ==========================================
+    # REVENUE PREDICTION
+    # ==========================================
 
     revenue_prediction = int(
         enrollment_prediction
-        *
-        course_price
+        * course_price
     )
 
-    # -----------------------------------
+    # ==========================================
     # DEMAND SCORE
-    # -----------------------------------
+    # ==========================================
 
     demand_score = int(
 
@@ -589,153 +579,60 @@ if predict_button:
             (course_price / 250)
         )
 
-        *
-        dynamic_factor
+        * dynamic_factor
+
     )
 
     demand_score = max(
-        min(
-            demand_score,
-            100
-        ),
+        min(demand_score, 100),
         1
     )
 
-    # -----------------------------------
-    # CONFIDENCE SCORE
-    # -----------------------------------
-
-    confidence_score = random.randint(
-        82,
-        96
-    )
-
-    # ==================================================
+    # ==========================================
     # RESULTS DISPLAY
-    # ==================================================
-
-    st.success(
-        "✅ AI Forecast Generated Successfully"
-    )
-
-    c1, c2, c3 = st.columns(3)
-
-    with c1:
-        st.metric(
-            "👨‍🎓 Enrollment Forecast",
-            enrollment_prediction
-        )
-
-    with c2:
-        st.metric(
-            "💰 Revenue Forecast",
-            f"₹ {revenue_prediction:,}"
-        )
-
-    with c3:
-        st.metric(
-            "🎯 Demand Score",
-            f"{demand_score}/100"
-        )
-
-    st.metric(
-        "🤖 Prediction Confidence",
-        f"{confidence_score}%"
-    )
-
-    st.markdown("---")
-
-    # ==================================================
-    # FORECAST INTERPRETATION
-    # ==================================================
+    # ==========================================
 
     st.subheader(
         "📈 Forecast Interpretation"
     )
 
-    if revenue_prediction >= 500000:
+    st.metric(
+        "👨‍🎓 Predicted Enrollment",
+        enrollment_prediction
+    )
+
+    st.metric(
+        "💰 Predicted Revenue",
+        f"₹ {revenue_prediction:,}"
+    )
+
+    st.metric(
+        "🔥 Demand Score",
+        f"{demand_score}/100"
+    )
+
+    # ==========================================
+    # AI INTERPRETATION
+    # ==========================================
+
+    if demand_score >= 75:
 
         st.success(
-            "🔥 Very high revenue and strong market demand predicted."
+            "🔥 Course shows strong future demand and high revenue potential."
         )
 
-    elif revenue_prediction >= 150000:
+    elif demand_score >= 45:
 
         st.warning(
-            "📊 Moderate revenue potential with stable demand."
+            "📈 Course shows moderate market demand and steady growth."
         )
 
     else:
 
         st.error(
-            "⚠ Lower revenue potential. Strategy improvements recommended."
+            "⚠ Course demand appears limited and may need improvement."
         )
-
-    # ==================================================
-    # AI INSIGHT
-    # ==================================================
-
-    st.subheader(
-        "🧠 AI Business Insight"
-    )
-
-    st.info(f"""
-
-    Estimated enrollment:
-    {enrollment_prediction} learners
-
-    Revenue forecast:
-    ₹ {revenue_prediction:,}
-
-    Market demand score:
-    {demand_score}/100
-
-    Prediction confidence:
-    {confidence_score}%
-
-    """)
-
-    st.markdown("---")
-
-    # ==================================================
-    # DOWNLOAD REPORT
-    # ==================================================
-
-    result_df = pd.DataFrame({
-
-        "Category": [category],
-        "Course Level": [course_level],
-        "Enrollment Forecast": [
-            enrollment_prediction
-        ],
-        "Revenue Forecast": [
-            revenue_prediction
-        ],
-        "Demand Score": [
-            demand_score
-        ],
-        "Confidence": [
-            confidence_score
-        ]
-
-    })
-
-    csv = result_df.to_csv(
-        index=False
-    )
-
-    st.download_button(
-
-        "⬇ Download Forecast Report",
-
-        csv,
-
-        "forecast_report.csv",
-
-        "text/csv"
-
-    ) 
-    
+        
 # ==================================================
 # RESULTS
 # ==================================================
