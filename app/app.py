@@ -470,6 +470,14 @@ else:
     )
 
    # ==================================================
+# PREDICT BUTTON
+# ==================================================
+
+predict_button = st.button(
+    "🚀 Generate AI Forecast"
+)
+
+# ==================================================
 # PREDICTION RESULTS
 # ==================================================
 
@@ -491,7 +499,6 @@ if predict_button:
 
     }
 
-    # Default if category not found
     cat_factor = category_multiplier.get(
         category,
         1.10
@@ -524,7 +531,7 @@ if predict_button:
     )
 
     # -----------------------------------
-    # ENROLLMENT PREDICTION
+    # ENROLLMENT FORECAST
     # -----------------------------------
 
     enrollment_prediction = int(
@@ -555,7 +562,7 @@ if predict_button:
     )
 
     # -----------------------------------
-    # REVENUE PREDICTION
+    # REVENUE FORECAST
     # -----------------------------------
 
     revenue_prediction = int(
@@ -649,7 +656,7 @@ if predict_button:
     if revenue_prediction >= 500000:
 
         st.success(
-            "🔥 Very High revenue and strong market demand predicted."
+            "🔥 Very high revenue and strong market demand predicted."
         )
 
     elif revenue_prediction >= 150000:
@@ -661,11 +668,11 @@ if predict_button:
     else:
 
         st.error(
-            "⚠ Lower revenue potential. Pricing or strategy improvements recommended."
+            "⚠ Lower revenue potential. Strategy improvements recommended."
         )
 
     # ==================================================
-    # AI BUSINESS INSIGHT
+    # AI INSIGHT
     # ==================================================
 
     st.subheader(
@@ -674,22 +681,24 @@ if predict_button:
 
     st.info(f"""
 
-    Predicted enrollment is approximately
-    {enrollment_prediction} learners.
+    Estimated enrollment:
+    {enrollment_prediction} learners
 
-    Estimated revenue potential is
-    ₹ {revenue_prediction:,}.
+    Revenue forecast:
+    ₹ {revenue_prediction:,}
 
-    Market demand score is
-    {demand_score}/100 with
-    {confidence_score}% prediction confidence.
+    Market demand score:
+    {demand_score}/100
+
+    Prediction confidence:
+    {confidence_score}%
 
     """)
 
     st.markdown("---")
 
     # ==================================================
-    # DOWNLOAD RESULTS
+    # DOWNLOAD REPORT
     # ==================================================
 
     result_df = pd.DataFrame({
@@ -725,7 +734,7 @@ if predict_button:
 
         "text/csv"
 
-    )
+    ) 
     
 # ==================================================
 # RESULTS
