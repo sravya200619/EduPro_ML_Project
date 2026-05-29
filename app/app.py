@@ -469,227 +469,88 @@ else:
         use_container_width=True
     )
 
-   # ==================================================
-# PREDICTION ENGINE
-# ==================================================
+    # ==================================================
+    # PREDICTION RESULTS
+    # ==================================================
 
-st.subheader("🤖 AI Prediction Engine")
+    if predict_button:
 
-import random
+        category_multiplier = {
 
-col1, col2 = st.columns(2)
+            "AI": 1.40,
+            "Data Science": 1.32,
+            "Python": 1.20,
+            "Cloud": 1.18,
+            "Cybersecurity": 1.28
 
-with col1:
+        }
 
-    category = st.selectbox(
-        "Course Category",
-        [
-            "AI",
-            "Data Science",
-            "Python",
-            "Cloud",
-            "Cybersecurity"
-        ]
-    )
+        level_multiplier = {
 
-    course_level = st.selectbox(
-        "Course Level",
-        [
-            "Beginner",
-            "Intermediate",
-            "Advanced"
-        ]
-    )
+            "Beginner": 1.05,
+            "Intermediate": 1.15,
+            "Advanced": 1.30
 
-    course_duration = st.slider(
-        "Course Duration (Hours)",
-        1,
-        200,
-        40
-    )
+        }
 
-    course_price = st.number_input(
-        "Course Price (₹)",
-        min_value=500,
-        max_value=100000,
-        value=5000
-    )
+        dynamic_factor = random.uniform(0.90, 1.15)
 
-with col2:
+        enrollment_prediction = int(
 
-    course_rating = st.slider(
-        "Course Rating",
-        1.0,
-        5.0,
-        4.0
-    )
+            (
+                (course_rating * 30)
+                +
+                (teacher_rating * 25)
+                +
+                (years_experience * 6)
+                +
+                (course_duration * 3)
+                -
+                (course_price / 180)
+            )
 
-    teacher_rating = st.slider(
-        "Teacher Rating",
-        1.0,
-        5.0,
-        4.2
-    )
-
-    years_experience = st.slider(
-        "Instructor Experience",
-        0,
-        25,
-        5
-    )
-
-# ==================================================
-# PREDICT BUTTON
-# ==================================================
-
-predict_button = st.button(
-    "🚀 Predict Forecast"
-)
-
-# ==================================================
-# PREDICTION RESULTS
-# ==================================================
-
-if predict_button:
-
-    category_multiplier = {
-
-        "AI": 1.40,
-        "Data Science": 1.32,
-        "Python": 1.20,
-        "Cloud": 1.18,
-        "Cybersecurity": 1.28
-
-    }
-
-    level_multiplier = {
-
-        "Beginner": 1.05,
-        "Intermediate": 1.15,
-        "Advanced": 1.30
-
-    }
-
-    cat_factor = category_multiplier.get(
-        category,
-        1.0
-    )
-
-    level_factor = level_multiplier.get(
-        course_level,
-        1.0
-    )
-
-    dynamic_factor = random.uniform(
-        0.90,
-        1.15
-    )
-
-    # ENROLLMENT
-
-    enrollment_prediction = int(
-
-        (
-            (course_rating * 30)
-            +
-            (teacher_rating * 25)
-            +
-            (years_experience * 6)
-            +
-            (course_duration * 3)
-            -
-            (course_price / 180)
+            *
+            category_multiplier[category]
+            *
+            level_multiplier[course_level]
+            *
+            dynamic_factor
         )
 
-        * cat_factor
-        * level_factor
-        * dynamic_factor
-    )
-
-    enrollment_prediction = max(
-        enrollment_prediction,
-        10
-    )
-
-    # REVENUE
-
-    revenue_prediction = int(
-        enrollment_prediction
-        * course_price
-    )
-
-    # DEMAND SCORE
-
-    demand_score = int(
-
-        (
-            (course_rating * 18)
-            +
-            (teacher_rating * 16)
-            +
-            (years_experience * 4)
-            +
-            (course_duration * 2)
-            -
-            (course_price / 250)
+        enrollment_prediction = max(
+            enrollment_prediction,
+            10
         )
 
-        * dynamic_factor
-    )
-
-    demand_score = max(
-        min(demand_score, 100),
-        1
-    )
-
-    # DISPLAY
-
-    st.markdown("---")
-
-    st.subheader(
-        "📈 Forecast Results"
-    )
-
-    c1, c2, c3 = st.columns(3)
-
-    with c1:
-        st.metric(
-            "👨‍🎓 Enrollment",
-            enrollment_prediction
+        revenue_prediction = int(
+            enrollment_prediction * course_price
         )
 
-    with c2:
-        st.metric(
-            "💰 Revenue",
-            f"₹ {revenue_prediction:,}"
+        demand_score = int(
+
+            (
+                (course_rating * 18)
+                +
+                (teacher_rating * 16)
+                +
+                (years_experience * 4)
+                +
+                (course_duration * 2)
+                -
+                (course_price / 250)
+            )
+
+            * dynamic_factor
+
         )
 
-    with c3:
-        st.metric(
-            "🔥 Demand",
-            f"{demand_score}/100"
+        demand_score = max(
+            min(demand_score, 100),
+            1
         )
 
-    # INTERPRETATION
+        st.subheader("📈 Forecast Interpretation")
 
-    if demand_score >= 75:
-
-        st.success(
-            "🔥 Strong demand and high revenue potential."
-        )
-
-    elif demand_score >= 45:
-
-        st.warning(
-            "📈 Moderate demand and steady growth."
-        )
-
-    else:
-
-        st.error(
-            "⚠ Lower demand predicted."
-        )
-        
 # ==================================================
 # RESULTS
 # ==================================================
