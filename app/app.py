@@ -725,7 +725,6 @@ st.markdown("---")
 
 st.session_state.history.append({
 
-            "Category": category,
             "Revenue": revenue_prediction,
             "Enrollments": enrollment_prediction,
             "Demand Score": demand_score
