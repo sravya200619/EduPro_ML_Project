@@ -53,7 +53,7 @@ html, body, [class*="css"] {
 # LOAD DATA
 # ==========================================
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 data_path = BASE_DIR / "data" / "merged_data.csv"
 
