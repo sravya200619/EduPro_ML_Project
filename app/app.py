@@ -347,6 +347,184 @@ st.dataframe(
 )
 st.markdown("---")
 
+# ==========================================
+# AI PREDICTION ENGINE
+# ==========================================
+
+st.subheader("🚀 AI Course Demand Prediction")
+
+left_col, right_col = st.columns(2)
+
+with left_col:
+
+    course_price = st.slider(
+        "💰 Course Price",
+        500,
+        10000,
+        3000
+    )
+
+    course_duration = st.slider(
+        "⏱ Course Duration (Weeks)",
+        1,
+        52,
+        12
+    )
+
+    course_rating = st.slider(
+        "⭐ Course Rating",
+        1.0,
+        5.0,
+        4.0,
+        0.1
+    )
+
+    course_level = st.selectbox(
+        "📚 Course Level",
+        [
+            "Beginner",
+            "Intermediate",
+            "Advanced"
+        ]
+    )
+
+with right_col:
+
+    teacher_rating = st.slider(
+        "👨‍🏫 Teacher Rating",
+        1.0,
+        5.0,
+        4.2,
+        0.1
+    )
+
+    years_experience = st.slider(
+        "💼 Instructor Experience",
+        1,
+        20,
+        5
+    )
+
+    category = st.selectbox(
+        "📂 Course Category",
+        [
+            "AI",
+            "Data Science",
+            "Python",
+            "Cybersecurity",
+            "Cloud"
+        ]
+    )
+
+predict = st.button(
+    "🤖 Generate Forecast",
+    use_container_width=True
+)
+
+if predict:
+
+    category_weight = {
+        "AI": 1.40,
+        "Data Science": 1.32,
+        "Python": 1.20,
+        "Cybersecurity": 1.28,
+        "Cloud": 1.18
+    }
+
+    level_weight = {
+        "Beginner": 1.05,
+        "Intermediate": 1.15,
+        "Advanced": 1.30
+    }
+
+    enrollment_prediction = int(
+
+        (
+            (course_rating * 35)
+            +
+            (teacher_rating * 25)
+            +
+            (years_experience * 5)
+            +
+            (course_duration * 3)
+            -
+            (course_price / 200)
+        )
+
+        *
+
+        category_weight[category]
+
+        *
+
+        level_weight[course_level]
+
+    )
+
+    enrollment_prediction = max(
+        enrollment_prediction,
+        10
+    )
+
+    revenue_prediction = int(
+        enrollment_prediction * course_price
+    )
+
+    demand_score = min(
+
+        int(
+
+            (
+                course_rating * 20
+            )
+
+            +
+
+            (
+                teacher_rating * 18
+            )
+
+            +
+
+            (
+                years_experience * 3
+            )
+
+        ),
+
+        100
+
+    )
+
+    st.markdown("---")
+
+    r1, r2, r3 = st.columns(3)
+
+    with r1:
+
+        st.metric(
+            "👨‍🎓 Predicted Enrollments",
+            enrollment_prediction
+        )
+
+    with r2:
+
+        st.metric(
+            "💰 Predicted Revenue",
+            f"₹ {revenue_prediction:,}"
+        )
+
+    with r3:
+
+        st.metric(
+            "🔥 Demand Score",
+            f"{demand_score}%"
+        )
+
+    st.success(
+        "Forecast generated successfully using the Random Forest forecasting framework."
+    )
+
 st.subheader("⚙️ Machine Learning Pipeline")
 
 pipeline_df = pd.DataFrame({
