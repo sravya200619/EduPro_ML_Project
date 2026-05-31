@@ -636,30 +636,13 @@ st.markdown("---")
 # ==========================================
 # FORECAST VALIDATION
 # ==========================================
-
 st.subheader("📈 Forecast Validation")
 
 validation_df = pd.DataFrame({
 
-    "Actual": [
-        120,
-        135,
-        150,
-        170,
-        190,
-        210,
-        230
-    ],
+    "Actual": [120,135,150,170,190,210,230],
 
-    "Predicted": [
-        118,
-        140,
-        148,
-        172,
-        188,
-        214,
-        228
-    ]
+    "Predicted": [118,140,148,172,188,214,228]
 
 })
 
@@ -668,9 +651,8 @@ fig_validation = px.scatter(
     validation_df,
 
     x="Actual",
-    y="Predicted",
 
-    trendline="ols",
+    y="Predicted",
 
     title="Actual vs Predicted Enrollment"
 
