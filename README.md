@@ -42,6 +42,12 @@ https://github.com/sravya200619/EduPro_ML_Project
 
 ---
 
+## 📄 Project Documentation
+
+Project Report:
+
+[EduPro Ml_Project Report](reports/EduPro_Ml_Project_Report.pdf)
+
 # 🏆 Key Highlights
 
 * End-to-End Machine Learning Pipeline
