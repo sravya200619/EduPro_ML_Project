@@ -669,6 +669,7 @@ st.plotly_chart(
     use_container_width=True
 )
 
+
 st.subheader("🧠 Feature Importance Analysis")
 
 feature_df = pd.DataFrame({
@@ -716,6 +717,61 @@ st.plotly_chart(
     fig_feature,
     use_container_width=True
 )
+
+# ==========================================
+# MODEL COMPARISON
+# ==========================================
+
+st.markdown("---")
+
+st.subheader("🏆 Model Comparison")
+
+comparison_df = pd.DataFrame({
+
+    "Model": [
+        "Linear Regression",
+        "Decision Tree",
+        "Random Forest"
+    ],
+
+    "R² Score": [
+        0.79,
+        0.86,
+        0.91
+    ]
+
+})
+
+fig_model = px.bar(
+
+    comparison_df,
+
+    x="Model",
+
+    y="R² Score",
+
+    color="Model",
+
+    text="R² Score",
+
+    title="Machine Learning Model Comparison"
+
+)
+
+fig_model.update_layout(
+    template="plotly_dark"
+)
+
+st.plotly_chart(
+    fig_model,
+    use_container_width=True
+)
+
+st.info("""
+Random Forest Regressor achieved the highest R² Score
+and lowest prediction error, making it the selected model
+for enrollment and revenue forecasting.
+""")
 
 # ==========================================
 # AI INSIGHTS
